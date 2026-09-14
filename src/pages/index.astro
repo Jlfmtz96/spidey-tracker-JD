@@ -1,11 +1,32 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import SpideyFrame from '../components/SpideyFrame.astro';
+import SpideyApp from '../components/SpideyApp.jsx';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Spidey Tracker | Invitación">
+  <!-- Layout Principal: 3 Columnas idéntico a las DevTools -->
+  <div class="h-screen w-full bg-[#1e345d] flex overflow-hidden">
+    
+    <!-- Panel Izquierdo (x-feed) -->
+    <aside class="w-16 md:w-24 shrink-0 flex flex-col items-center py-8 gap-4 bg-black/10 border-r border-black/20 z-10">
+       <!-- Aquí irán tus íconos de Spidey -->
+    </aside>
+
+    <!-- Centro (tracker-container) -->
+    <main class="flex-1 flex items-center justify-center p-4 md:p-8">
+      <!-- El contenedor mantiene formato de monitor panorámico (aspect-video) -->
+      <div class="w-full max-w-5xl aspect-video relative flex">
+        <SpideyFrame>
+          <SpideyApp client:only="react" />
+        </SpideyFrame>
+      </div>
+    </main>
+
+    <!-- Panel Derecho (events-panel) -->
+    <aside class="w-16 md:w-24 shrink-0 flex flex-col items-center py-8 bg-black/10 border-l border-black/20 z-10">
+       <!-- Aquí irá el botón de la araña -->
+    </aside>
+
+  </div>
 </Layout>

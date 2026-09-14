@@ -1,0 +1,42 @@
+---
+// src/components/SpideyFrame.astro
+---
+<!-- El grid se define rígidamente en Tailwind. Cols: 16px, 1fr, 16px. Rows: 16px, 48px, 1fr, 48px, 16px -->
+<div 
+  class="grid grid-cols-[16px_1fr_16px] grid-rows-[16px_48px_1fr_48px_16px] w-full h-full drop-shadow-2xl mx-auto" 
+  style="image-rendering: pixelated;"
+>
+  <!-- === FILA 1 === -->
+  <div style="background-image: url('/images/frame/frame1-1.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
+  <div style="background-image: url('/images/frame/frame1-2.png'); background-size: auto 16px; background-repeat: repeat-x; background-position: center;"></div>
+  <div style="background-image: url('/images/frame/frame1-3.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
+
+  <!-- === FILA 2 === -->
+  <div style="background-image: url('/images/frame/frame2-1.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
+  <div class="flex justify-center items-center relative" style="background-image: url('/images/frame/frame2-2.png'); background-color: #2b3a4a; background-repeat: repeat-x; background-size: auto 100%; background-position: center;">
+     <img src="/tracker_logo3.png" alt="Spidey Tracker" class="h-8 absolute -top-4 z-10 drop-shadow-md" onerror="this.style.display='none'" />
+  </div>
+  <div style="background-image: url('/images/frame/frame2-3.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
+
+  <!-- === FILA 3 (HUECO CENTRAL) === -->
+  <div style="background-image: url('/images/frame/frame3-1.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
+  <div class="bg-[#2b3a4a] relative flex flex-col w-full h-full overflow-hidden">
+     <slot />
+  </div>
+  <div style="background-image: url('/images/frame/frame3-3.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
+
+  <!-- === FILA 4 === -->
+  <div style="background-image: url('/images/frame/frame4-1.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
+  <div class="flex justify-center items-center" style="background-image: url('/images/frame/frame4-2.png'); background-color: #5587bd; background-repeat: repeat-x; background-size: auto 100%; background-position: center;">
+     <div class="bg-[#2b3a4a] text-[#8ba3bd] text-[10px] px-8 py-1 rounded-full border-2 border-black tracking-widest flex items-center gap-4">
+        SELECCIONA UNA OPCIÓN DE SONIDO
+        <button class="bg-gray-300 rounded px-2 py-0.5 text-black hover:bg-white text-xs">🔊</button>
+     </div>
+  </div>
+  <div style="background-image: url('/images/frame/frame4-3.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
+
+  <!-- === FILA 5 === -->
+  <div style="background-image: url('/images/frame/frame5-1.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
+  <div style="background-image: url('/images/frame/frame5-2.png'); background-size: auto 16px; background-repeat: repeat-x; background-position: center;"></div>
+  <div style="background-image: url('/images/frame/frame5-3.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
+</div>

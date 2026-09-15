@@ -1,11 +1,10 @@
 ---
-// src/layouts/Layout.astro
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
-import '../styles/global.css';
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -16,12 +15,9 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
-    <!-- Importamos la fuente estilo terminal -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
   </head>
-  
-  <body class="bg-gray-900 text-green-400 min-h-screen" style="font-family: 'VT323', monospace;">
-    <!-- El <slot /> es donde se inyectará el contenido de nuestra página -->
+  <body>
     <slot />
   </body>
 </html>

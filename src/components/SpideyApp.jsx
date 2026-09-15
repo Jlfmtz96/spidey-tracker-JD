@@ -1,26 +1,66 @@
-import { useState, useEffect } from 'react';
-// import TrackerGoogleMap from './TrackerGoogleMap.jsx'; // Descomenta esto cuando el mapa esté listo
+import { useState, useEffect } from "react";
+// import TrackerGoogleMap from './TrackerMap.jsx';
+
+// function HangingSpidey() {
+//   return (
+//     <div className="spidey-dangle">
+//       <span className="web" />
+//       {/* <svg
+//         className="spidey"
+//         viewBox="0 0 32 40"
+//         width="42"
+//         height="52"
+//         aria-hidden="true"
+//       >
+//         <rect x="14" y="0" width="4" height="6" fill="#d9e4ee" />
+//         <rect x="8" y="6" width="16" height="14" fill="#c81e1e" />
+//         <rect x="10" y="8" width="5" height="6" fill="#f2f6fb" />
+//         <rect x="17" y="8" width="5" height="6" fill="#f2f6fb" />
+//         <rect x="11" y="10" width="3" height="3" fill="#1a1a1a" />
+//         <rect x="18" y="10" width="3" height="3" fill="#1a1a1a" />
+//         <rect x="12" y="20" width="8" height="10" fill="#1c3f8c" />
+//         <rect x="6" y="20" width="6" height="4" fill="#c81e1e" />
+//         <rect x="20" y="20" width="6" height="4" fill="#c81e1e" />
+//         <rect x="10" y="30" width="4" height="8" fill="#c81e1e" />
+//         <rect x="18" y="30" width="4" height="8" fill="#c81e1e" />
+//       </svg> */}
+//       <div className="spidey-sprite" aria-hidden="true" />
+//     </div>
+//   );
+// }
+
+function HangingSpidey() {
+  return (
+    <div className="spidey-drop-in">
+      <div className="spidey-dangle">
+        <span className="web" />
+        {/* Este div reemplaza al SVG y cargará el sprite */}
+        <div className="spidey-sprite" aria-hidden="true" />
+      </div>
+    </div>
+  );
+}
 
 export default function SpideyApp() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [progress, setProgress] = useState("");
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let currentProgress = "";
     const interval = setInterval(() => {
-      if (currentProgress.length < 10) {
-        currentProgress += "■";
-        setProgress(currentProgress);
-      } else {
-        clearInterval(interval);
-      }
-    }, 200);
+      setProgress((value) => {
+        if (value >= 10) {
+          clearInterval(interval);
+          return 10;
+        }
+        return value + 1;
+      });
+    }, 180);
     return () => clearInterval(interval);
   }, []);
 
   if (isLoaded) {
     return (
-      <div className="w-full h-full flex items-center justify-center text-white">
+      <div className="boot-screen">
         {/* <TrackerGoogleMap /> */}
         <p>EL MAPA CARGARÁ AQUÍ...</p>
       </div>
@@ -28,48 +68,30 @@ export default function SpideyApp() {
   }
 
   return (
-    // Contenedor principal
-    <div className="flex flex-col items-center justify-center w-full h-full bg-[#34404d] text-[#8ba3bd] text-[10px] md:text-xs text-center p-4">
-      
-      {/* Hilo de telaraña y máscara */}
-      <div className="flex flex-col items-center mb-6">
-        <div className="w-0.5 h-24 bg-white/50"></div>
-        <img 
-          src="/spidey-hanging.png" 
-          alt="Spidey" 
-          className="w-12 h-12 object-contain animate-bounce"
-          onError={(e) => {
-            e.target.style.display = 'none'; // Oculta la imagen si no existe
-            e.target.insertAdjacentHTML('afterend', '<span class="text-red-500 text-2xl">🕷️</span>'); // Muestra un emoji temporal
-          }}
-        />
-      </div>
-      
-      <p className="mb-4 leading-loose max-w-lg">
-        BIENVENIDO A SPIDEY TRACKER.<br/>
-        INTERACTÚA CON EL MAPA PARA VER<br/>
-        AVISTAMIENTOS DE [NOMBRE] EN TODO EL MUNDO.
+    <div className="boot-screen">
+      <HangingSpidey />
+
+      <p className="welcome">
+        BIENVENIDO A SPIDEY TRACKER.
+        <br />
+        INTERACTÚA CON EL MAPA PARA VER
+        <br />
+        AVISTAMIENTOS DE SPIDER-MAN EN TODO EL MUNDO.
       </p>
 
-      {/* Barra de carga */}
-      <div className="text-cyan-400 mb-6 tracking-widest text-lg h-6">
-        {progress.padEnd(10, '□')}
+      <div className="loader" aria-hidden="true">
+        {Array.from({ length: 10 }, (_, index) => (
+          <span key={index} className={index < progress ? "on" : ""} />
+        ))}
       </div>
 
-      <p className="mb-4 text-[#8ba3bd]">ELIGE TU CONFIGURACIÓN Y EMPIEZA A RASTREAR</p>
+      <p className="hint">ELIGE TU CONFIGURACIÓN Y EMPIEZA A RASTREAR</p>
 
-      {/* Botones Retro */}
-      <div className="flex flex-wrap justify-center gap-4">
-        <button 
-          onClick={() => setIsLoaded(true)}
-          className="border-2 border-[#5a86b5] bg-[#4a6382] text-white px-8 py-2 rounded-md hover:bg-white hover:text-black transition-colors"
-        >
+      <div className="sound-row">
+        <button type="button" className="sound-btn active" onClick={() => setIsLoaded(true)}>
           SONIDO ACTIVADO
         </button>
-        <button 
-          onClick={() => setIsLoaded(true)}
-          className="border-2 border-[#40546b] bg-[#2a3441] text-[#6b829c] px-8 py-2 rounded-md hover:bg-[#5a86b5] hover:text-white transition-colors"
-        >
+        <button type="button" className="sound-btn" onClick={() => setIsLoaded(true)}>
           SONIDO DESACTIVADO
         </button>
       </div>

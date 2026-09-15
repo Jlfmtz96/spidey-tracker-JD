@@ -1,42 +1,337 @@
 ---
-// src/components/SpideyFrame.astro
 ---
-<!-- El grid se define rígidamente en Tailwind. Cols: 16px, 1fr, 16px. Rows: 16px, 48px, 1fr, 48px, 16px -->
-<div 
-  class="grid grid-cols-[16px_1fr_16px] grid-rows-[16px_48px_1fr_48px_16px] w-full h-full drop-shadow-2xl mx-auto" 
-  style="image-rendering: pixelated;"
->
-  <!-- === FILA 1 === -->
-  <div style="background-image: url('/images/frame/frame1-1.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
-  <div style="background-image: url('/images/frame/frame1-2.png'); background-size: auto 16px; background-repeat: repeat-x; background-position: center;"></div>
-  <div style="background-image: url('/images/frame/frame1-3.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
 
-  <!-- === FILA 2 === -->
-  <div style="background-image: url('/images/frame/frame2-1.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
-  <div class="flex justify-center items-center relative" style="background-image: url('/images/frame/frame2-2.png'); background-color: #2b3a4a; background-repeat: repeat-x; background-size: auto 100%; background-position: center;">
-     <img src="/tracker_logo3.png" alt="Spidey Tracker" class="h-8 absolute -top-4 z-10 drop-shadow-md" onerror="this.style.display='none'" />
+<div class="tracker-wrapper">
+  <div class="frame">
+    <!-- Bordes superiores -->
+    <div class="slice tl"></div>
+    <div class="slice t"></div>
+    <div class="slice tr"></div>
+
+    <!-- Borde izquierdo -->
+    <div class="slice l"></div>
+    
+    <!-- Contenedor central (Bezel) -->
+    <div class="bezel">
+      
+      <!-- LOGO FLOTANTE SUPERIOR -->
+      <header class="titlebar">
+        <img src="/tracker_logo3.png" alt="Spidey Tracker" class="logo" />
+      </header>
+
+      <!-- PANTALLA (El único elemento que ocupa espacio aquí adentro) -->
+      <div class="screen">
+        <slot />
+      </div>
+
+      <!-- BOTÓN FLOTANTE INFERIOR -->
+      <div class="sound-status">
+        <span>SELECCIONA UNA OPCIÓN DE SONIDO</span>
+      </div>
+
+    </div>
+    
+    <!-- Borde derecho -->
+    <div class="slice r"></div>
+
+    <!-- NUEVA FILA 3: Sombra / Banda intermedia (Frame 3) -->
+    <div class="slice shadow-l"></div>
+    <div class="slice shadow-c"></div>
+    <div class="slice shadow-r"></div>
+
+    <!-- Bordes inferiores -->
+    <div class="slice bl"></div>
+    <div class="slice b"></div>
+    <div class="slice br"></div>
+
+    <!-- Remate de sombra (Frame 5) -->
+    <div class="slice strip-l"></div>
+    <div class="slice strip-c"></div>
+    <div class="slice strip-r"></div>
   </div>
-  <div style="background-image: url('/images/frame/frame2-3.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
 
-  <!-- === FILA 3 (HUECO CENTRAL) === -->
-  <div style="background-image: url('/images/frame/frame3-1.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
-  <div class="bg-[#2b3a4a] relative flex flex-col w-full h-full overflow-hidden">
-     <slot />
+  <div class="external-footer">
+    <div class="hanging-buttons">
+      <a class="btn-trailer" href="#" aria-label="Ver tráiler">VER TRAILER</a>
+      <a class="btn-tickets" href="#" aria-label="Confirma tu asistencia">CONFIRMA TU ASISTENCIA</a>
+    </div>
+    
+    <div class="promo-center">
+      <p class="film-title">¡ESTÁS INVITADO!</p>
+      <p class="film-now">A UNA FIESTA ÉPICA</p>
+      <p class="presented">Celebrando el cumpleaños de <strong>[NOMBRE]</strong></p>
+    </div>
   </div>
-  <div style="background-image: url('/images/frame/frame3-3.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
-
-  <!-- === FILA 4 === -->
-  <div style="background-image: url('/images/frame/frame4-1.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
-  <div class="flex justify-center items-center" style="background-image: url('/images/frame/frame4-2.png'); background-color: #5587bd; background-repeat: repeat-x; background-size: auto 100%; background-position: center;">
-     <div class="bg-[#2b3a4a] text-[#8ba3bd] text-[10px] px-8 py-1 rounded-full border-2 border-black tracking-widest flex items-center gap-4">
-        SELECCIONA UNA OPCIÓN DE SONIDO
-        <button class="bg-gray-300 rounded px-2 py-0.5 text-black hover:bg-white text-xs">🔊</button>
-     </div>
-  </div>
-  <div style="background-image: url('/images/frame/frame4-3.png'); background-size: 16px auto; background-repeat: repeat-y; background-position: center;"></div>
-
-  <!-- === FILA 5 === -->
-  <div style="background-image: url('/images/frame/frame5-1.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
-  <div style="background-image: url('/images/frame/frame5-2.png'); background-size: auto 16px; background-repeat: repeat-x; background-position: center;"></div>
-  <div style="background-image: url('/images/frame/frame5-3.png'); background-size: 16px 16px; background-repeat: no-repeat;"></div>
 </div>
+
+<style>
+  .tracker-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* Cambiamos height: 100% por flex: 1 para forzar la expansión vertical */
+    flex: 1; 
+  }
+
+  .frame {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--frame-slice) minmax(0, 1fr) var(--frame-slice);
+    /* Orden: Arriba (36px) | Centro (auto) | Sombra (8px) | Abajo (58px) | Remate (7px) */
+    grid-template-rows: var(--frame-slice) minmax(0, 1fr) 18px 58px 7px; 
+    width: 100%;
+    flex: 1;
+    image-rendering: pixelated;
+  }
+
+  .slice {
+    background-repeat: no-repeat;
+  }
+
+  .tl {
+    background-image: url("/images/frame/frame1-1.png");
+    background-size: 100% 100%;
+  }
+  .t {
+    background-image: url("/images/frame/frame1-2.png");
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+  }
+  .tr {
+    background-image: url("/images/frame/frame1-3.png");
+    background-size: 100% 100%;
+  }
+  .l {
+    background-image: url("/images/frame/frame2-1.png");
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+  }
+  .r {
+    background-image: url("/images/frame/frame2-3.png");
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+  }
+
+  .shadow-l {
+    background-image: url("/images/frame/frame3-1.png");
+    background-size: 100% 100%;
+  }
+  .shadow-c {
+    background-image: url("/images/frame/frame3-2.png");
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+  }
+  .shadow-r {
+    background-image: url("/images/frame/frame3-3.png");
+    background-size: 100% 100%;
+  }
+
+  .bl {
+    background-image: url("/images/frame/frame4-1.png"); /* Cambiado de 5 a 4 */
+    background-size: 100% 100%;
+  }
+  .b {
+    background-image: url("/images/frame/frame4-2.png"); /* Cambiado de 5 a 4 */
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+  }
+  .br {
+    background-image: url("/images/frame/frame4-3.png"); /* Cambiado de 5 a 4 */
+    background-size: 100% 100%;
+  }
+
+  .strip-l {
+    background-image: url("/images/frame/frame5-1.png");
+    background-size: 100% 100%;
+  }
+  .strip-c {
+    background-image: url("/images/frame/frame5-2.png");
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+  }
+  .strip-r {
+    background-image: url("/images/frame/frame5-3.png");
+    background-size: 100% 100%;
+  }
+
+  .bezel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--spidey-teal);
+    padding: 0; /* Crea el contorno azul interno */
+    position: relative; /* ¡CRÍTICO! Esto atrapa a los elementos flotantes */
+  }
+
+  .titlebar {
+    position: absolute;
+    top: -20px; /* Sube el logo para que muerda el borde superior */
+    left: 0;
+    width: 100%; /* Ocupa todo el ancho para poder centrar */
+    display: flex;
+    justify-content: center;
+    z-index: 20;
+    pointer-events: none; /* Evita que estorbe clicks */
+  }
+
+  .logo {
+    height: 48px;
+    width: auto;
+    image-rendering: pixelated;
+  }
+
+  .screen {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    
+    /* 1. Un color base mucho más oscuro para igualar la original */
+    background-color: #212429; 
+    
+    background-image: 
+      /* Capa 1 (Frente): Líneas horizontales intercaladas (2px transparentes, 2px oscuras) */
+      repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.35) 2px,
+        rgba(0, 0, 0, 0.35) 4px
+      ),
+      /* Capa 2 (Medio): Sombreado en las esquinas (efecto monitor) */
+      radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.6) 120%),
+      /* Capa 3 (Fondo): Tu marca de agua de la araña */
+      url("/SM_ASCII_DOTS_WHITE.png"); 
+      
+    background-repeat: repeat, no-repeat, no-repeat;
+    background-position: top left, center, center;
+    
+    /* El tercer valor (40%) controla el tamaño de tu araña. Súbelo o bájalo según necesites */
+    background-size: 100% 100%, 100% 100%, 30%; 
+    
+    /* Opcional: Si tu imagen de araña es muy brillante, esto la fusiona con el fondo */
+    background-blend-mode: normal, normal, overlay; 
+
+    border: 3px solid #111;
+    box-shadow: inset 0 0 0 1px #1b2830;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sound-status {
+    position: absolute;
+    /* Empujamos el contenedor 76px hacia abajo */
+    bottom: -76px; 
+    /* Mantenemos la altura del marco para que el flexbox lo centre a la perfección */
+    height: 58px; 
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    z-index: 20;
+  }
+
+  .sound-status span {
+    background: #1c252c;
+    color: #8ea3b5;
+    border: 2px solid #0b0f12;
+    border-radius: 999px;
+    padding: 6px 28px;
+    font-size: 13px;
+    letter-spacing: 1.6px;
+    pointer-events: auto; /* Restaura los clicks en el botón por si le agregas funcionalidad */
+  }
+
+  .external-footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -20px;
+    z-index: 10;
+    /* Faltaba esta línea para que los botones abarquen todo el ancho */
+    width: 100%; 
+  }
+
+  .hanging-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px; /* Controla qué tan separados están los botones de los laterales */
+  }
+
+  .btn-trailer,
+  .btn-tickets {
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 3px solid #1a1208;
+    width: fit-content;
+  }
+
+  .btn-trailer {
+    background: #e38a1a;
+    color: #1a1208;
+  }
+
+  .btn-tickets {
+    background: #3ec3e0;
+    color: #082026;
+  }
+
+  .promo-center {
+    text-align: center;
+    color: #f4f7fb;
+    line-height: 1.05;
+    margin-top: 24px;
+  }
+
+  .film-title {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: #d61f26;
+    text-shadow: 0 1px 0 #3a0a0c;
+  }
+
+  .film-now {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .presented {
+    margin: 6px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    color: #d7e6f0;
+  }
+
+  .presented strong {
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  /* --- AJUSTES RESPONSIVOS DEL MARCO --- */
+  @media (max-width: 768px) {
+    .sound-status span {
+      padding: 4px 12px;
+      font-size: 9px; /* Letra más pequeña para que quepa todo el texto */
+      letter-spacing: 0.5px;
+      white-space: nowrap; /* Evita que se haga de dos renglones */
+    }
+    .hanging-buttons {
+      padding: 0 10px; /* Acerca los botones de "VER TRAILER" a los bordes */
+    }
+    .btn-trailer,
+    .btn-tickets {
+      font-size: 10px;
+      padding: 6px 10px;
+    }
+    .film-title {
+      font-size: 22px; /* Escala el título del evento */
+    }
+  }
+</style>

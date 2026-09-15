@@ -1,32 +1,99 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import SpideyFrame from '../components/SpideyFrame.astro';
-import SpideyApp from '../components/SpideyApp.jsx';
+import Layout from "../layouts/Layout.astro";
+import SpideyFrame from "../components/SpideyFrame.astro";
+import SpideyApp from "../components/SpideyApp.jsx";
 ---
 
 <Layout title="Spidey Tracker | Invitación">
-  <!-- Layout Principal: 3 Columnas idéntico a las DevTools -->
-  <div class="h-screen w-full bg-[#1e345d] flex overflow-hidden">
-    
-    <!-- Panel Izquierdo (x-feed) -->
-    <aside class="w-16 md:w-24 shrink-0 flex flex-col items-center py-8 gap-4 bg-black/10 border-r border-black/20 z-10">
-       <!-- Aquí irán tus íconos de Spidey -->
+  <div class="page">
+    <aside class="rail left-menu" aria-label="Accesos">
+      <button class="spider-btn" type="button" aria-label="Avistamiento 1"></button>
+      <button class="spider-btn" type="button" aria-label="Avistamiento 2"></button>
+      <button class="spider-btn" type="button" aria-label="Avistamiento 3"></button>
     </aside>
 
-    <!-- Centro (tracker-container) -->
-    <main class="flex-1 flex items-center justify-center p-4 md:p-8">
-      <!-- El contenedor mantiene formato de monitor panorámico (aspect-video) -->
-      <div class="w-full max-w-5xl aspect-video relative flex">
-        <SpideyFrame>
-          <SpideyApp client:only="react" />
-        </SpideyFrame>
-      </div>
+    <main class="tracker-container">
+      <SpideyFrame>
+        <SpideyApp client:only="react" />
+      </SpideyFrame>
     </main>
 
-    <!-- Panel Derecho (events-panel) -->
-    <aside class="w-16 md:w-24 shrink-0 flex flex-col items-center py-8 bg-black/10 border-l border-black/20 z-10">
-       <!-- Aquí irá el botón de la araña -->
+    <aside class="rail right-menu" aria-label="Eventos">
+      <button class="spider-btn" type="button" aria-label="Eventos"></button>
     </aside>
-
   </div>
 </Layout>
+
+<style>
+  .page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) 72px;
+    align-items: stretch;
+    background: #06152b; /* Modificado por un azul oscuro como el original */
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding-top: 28px;
+    z-index: 3;
+  }
+
+  .right-menu {
+    padding-top: 18px;
+  }
+
+  .spider-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 3px solid #f08a1a;
+    background-color: #1a1a1a;
+    background-image: url("/SM_ASCII_DOTS_WHITE.png");
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-shadow: 0 0 0 2px #111;
+    cursor: pointer;
+  }
+
+  .tracker-container {
+    height: 100vh;
+    max-height: 100vh;
+    /* Añadimos padding a los lados (40px) para que no pegue con los botones laterales */
+    padding: 18px 40px 12px; 
+    display: flex;
+    /* ESTO ES LO CRÍTICO: Hace que el flexbox fluya hacia abajo y permite que el hijo tome el 100% del ancho */
+    flex-direction: column; 
+    width: 100%;
+  }
+
+  /* --- AJUSTES RESPONSIVOS --- */
+  @media (max-width: 768px) {
+    .page {
+      display: flex; /* Quitamos el grid rígido en móviles */
+      position: relative;
+    }
+    .tracker-container {
+      width: 100%;
+      padding: 10px 0; /* Quitamos el padding lateral para que toque los bordes */
+    }
+    .rail {
+      position: absolute;
+      z-index: 50; /* Hace que los botones floten sobre el marco azul */
+    }
+    .left-menu {
+      left: 4px;
+    }
+    .right-menu {
+      right: 4px;
+    }
+    .spider-btn {
+      width: 36px;
+      height: 36px; /* Hacemos los botones un poco más sutiles */
+    }
+  }
+</style>

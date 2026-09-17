@@ -68,19 +68,19 @@ body {
 
 @keyframes dropDown {
   0% { 
-    transform: translateY(-200px); /* Escondido por encima del marco superior */
+    transform: translateY(-200px); 
     opacity: 0; 
   }
   15% {
-    transform: translateY(-80px); /* Baja y se asoma la mitad del cuerpo */
+    transform: translateY(-135px); /* ¡Sube el límite! Solo se asoma la cabeza */
     opacity: 1;
   }
   35% {
-    transform: translateY(-80px); /* Se mantiene asomado y esperando */
+    transform: translateY(-135px); /* Se mantiene asomado esperando */
     opacity: 1;
   }
   70%, 100% { 
-    transform: translateY(0); /* Termina de caer a su límite (la telaraña toca el borde exacto) */
+    transform: translateY(0); /* Termina de caer a su límite */
     opacity: 1; 
   }
 }
@@ -277,19 +277,19 @@ body {
     padding: 35px 4px 10px !important; 
   }
 
-/* 1. Spidey y su telaraña */
+  /* 1. Spidey y su telaraña en celular */
   .spidey-sprite {
     transform: scale(0.8); 
   }
   .spidey-dangle .web {
-    /* ¡AUMENTAMOS ESTO PARA QUE BAJE MÁS! */
-    height: 25vh !important; 
+    /* Medida controlada, ya no aplasta los botones */
+    height: 140px !important; 
     width: 2px;
   }
 
-  /* NUEVO: Empujamos el menú hacia abajo solo en celular */
+  /* NUEVO: Empujamos el menú justo por debajo de las patas de Spidey */
   .menu-fade-in {
-    padding-top: 38vh !important; 
+    padding-top: 195px !important; 
   }
 
   /* 2. Textos del menú (Proporciones correctas) */

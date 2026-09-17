@@ -204,6 +204,37 @@
       }
     });
   }
+
+  // LÓGICA INTELIGENTE PARA LA MARQUESINA DE TEXTO
+  const statusScreen = document.querySelector('.status-screen');
+  const marqueeText = document.querySelector('.marquee-text');
+
+  if (statusScreen && marqueeText) {
+    const checkMarquee = () => {
+      marqueeText.classList.remove('is-scrolling');
+      
+      // Truco: Forzamos la anchura real para medir la palabra pura
+      marqueeText.style.width = 'max-content'; 
+      
+      // Medimos con un margen de seguridad de 15px
+      if (marqueeText.scrollWidth > (statusScreen.clientWidth - 15)) {
+        marqueeText.classList.add('is-scrolling');
+      }
+      
+      // Restauramos la anchura al 100% para que el centrado funcione
+      marqueeText.style.width = '100%';
+    };
+
+    // Revisamos la primera vez que carga la página
+    checkMarquee();
+
+    // Creamos un "vigilante" que reaccione si React (SpideyApp) cambia el texto
+    const observer = new MutationObserver(checkMarquee);
+    observer.observe(marqueeText, { childList: true, characterData: true, subtree: true });
+
+    // También recalculamos si el usuario gira el celular
+    window.addEventListener('resize', checkMarquee);
+  }
 </script>
 
 <style>
@@ -456,21 +487,26 @@
   /* --- TEXTO BASE (Por defecto estático y centrado) --- */
   .marquee-text {
     color: #9eb4c6;
-    font-size: 20px;
+    font-size: 17px;
     letter-spacing: 1px;
     font-family: 'VT323', monospace;
     -webkit-font-smoothing: none;
     font-smooth: never;
     white-space: nowrap; 
     
-    /* Por defecto, SOLO tiene la animación de parpadeo */
+    /* ¡NUEVO! Forzamos centrado relativo */
+    position: relative;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    
     animation: blinkTextRetro 1.2s steps(2, start) infinite;
   }
 
-  /* --- MODO CORREDIZO (Se activa con JS solo si es largo) --- */
+  /* Cuando JS detecta que es largo, le aplica esto: */
   .marquee-text.is-scrolling {
     position: absolute;
-    /* Aplica ambas animaciones: movimiento + parpadeo */
+    text-align: left; /* Se alinea a la izquierda para poder correr */
     animation: scrollMarquee 8s linear infinite, blinkTextRetro 1.2s steps(2, start) infinite;
   }
 

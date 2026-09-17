@@ -531,11 +531,14 @@ form.addEventListener('submit', async (e) => {
 
   .close-btn:hover { color: #ff3b3b; }
 
-  .form-group {
+.form-group {
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
-    text-align: left;
+    /* Cambiamos la alineación de los textos a centrado */
+    text-align: center; 
+    /* Centramos los elementos hijos (las cajas de texto) */
+    align-items: center; 
   }
 
   .form-group label {
@@ -554,6 +557,12 @@ form.addEventListener('submit', async (e) => {
     font-size: 15px;
     outline: none;
     transition: border-color 0.2s;
+    /* Forzamos a que ocupen el 100% pero con un límite para que no se vean gigantes */
+    width: 100%;
+    max-width: 280px;
+    box-sizing: border-box;
+    /* Centramos lo que escribe el usuario al estilo Spidey */
+    text-align: center; 
   }
 
   .form-group input:focus {

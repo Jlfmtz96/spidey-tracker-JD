@@ -182,25 +182,50 @@
     });
   }
 
-  // CONTROL GLOBAL DE SONIDO
+// CONTROL GLOBAL DE SONIDO (SINCRONIZADO CON REACT)
   const soundBtnToggle = document.getElementById('global-sound-toggle');
   const soundIconImg = document.getElementById('sound-icon-img');
-  let isMuted = false;
+  let isGlobalSoundActive = false; // Arranca en estado neutro/apagado
 
   if (soundBtnToggle && soundIconImg) {
-    soundBtnToggle.addEventListener('click', () => {
-      isMuted = !isMuted;
-      
-      // Encuentra todos los audios (React, Astro, etc.) y los silencia a la fuerza
-      document.querySelectorAll('audio').forEach(audio => {
-        audio.muted = isMuted;
-      });
-
-      // Efecto visual: Atenúa la bocina si está silenciado
-      if (isMuted) {
-        soundIconImg.style.opacity = '0.3';
-      } else {
+    const updateGlobalSoundUI = (isActive) => {
+      if (isActive) {
+        soundBtnToggle.classList.add('is-active'); // Cambia a tus PNGs verdes
         soundIconImg.style.opacity = '1';
+      } else {
+        soundBtnToggle.classList.remove('is-active'); // Vuelve a los PNGs blancos
+        soundIconImg.style.opacity = '0.4';
+      }
+    };
+
+    // 1. Si le pican al icono flotante
+    soundBtnToggle.addEventListener('click', () => {
+      const reactBtnOn = document.getElementById('btn-react-sound-on');
+      
+      // Si el botón de React existe (pantalla de inicio) y el sonido no está activo:
+      if (reactBtnOn && !isGlobalSoundActive) {
+        reactBtnOn.click(); // Hack: Hacemos que pique el botón de React por nosotros
+        return; // El listener de abajo se encargará del resto
+      }
+
+      // Si ya estamos en el mapa, funciona como toggle normal (On/Off)
+      isGlobalSoundActive = !isGlobalSoundActive;
+      document.querySelectorAll('audio').forEach(audio => {
+        audio.muted = !isGlobalSoundActive;
+      });
+      updateGlobalSoundUI(isGlobalSoundActive);
+    });
+
+    // 2. Escuchamos si le pican directamente a los botones de React
+    // Esto mantiene el botón flotante sincronizado si el usuario elige las opciones de texto
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'btn-react-sound-on') {
+        isGlobalSoundActive = true;
+        document.querySelectorAll('audio').forEach(audio => audio.muted = false);
+        updateGlobalSoundUI(true);
+      } else if (e.target.id === 'btn-react-sound-off') {
+        isGlobalSoundActive = false;
+        updateGlobalSoundUI(false);
       }
     });
   }
@@ -457,6 +482,11 @@
     background-size: 100% 100%;
     background-repeat: no-repeat;
   }
+
+  /* --- ESTADO ACTIVO (BOTÓN VERDE) --- */
+  .sound-toggle-btn.is-active .btn-slice-l { background-image: url('/images/btn-green-1.png'); }
+  .sound-toggle-btn.is-active .btn-slice-c { background-image: url('/images/btn-green-2.png'); }
+  .sound-toggle-btn.is-active .btn-slice-r { background-image: url('/images/btn-green-3.png'); }
 
   /* --- ICONO CENTRAL --- */
   .sound-toggle-btn img {
@@ -774,12 +804,6 @@
        background-position: top left, center, center 45%;
     }
 
-    /* 3. Píldora de Selección de Sonido */
-    .sound-status {
-       bottom: -68px; /* Ajuste milimétrico de posición */
-    }
-
-
     /* 4. Botones Naranjas (Legibilidad absoluta) */
     .hanging-buttons {
       padding: 0 12px;
@@ -798,6 +822,24 @@
     .film-title {
       font-size: 20px;
     } */
+
+    /* 1. Bajamos los botones naranjas para hacer hueco */
+    .external-footer {
+      margin-top: -10px !important; 
+    }
+
+    /* 2. Empujamos la barra de texto a la derecha para que no la tape Spidey */
+    .sound-status {
+       bottom: -68px; 
+       padding-left: 50px; /* ¡Le hace el hueco exacto a Spidey! */
+       padding-right: 10px;
+       box-sizing: border-box;
+    }
+    
+    /* Hacemos el contenedor de texto un poco más delgado en móvil */
+    .status-screen {
+       height: 34px;
+    }
   }
 
 /* --- SPIDEY ESQUINA INFERIOR IZQUIERDA --- */

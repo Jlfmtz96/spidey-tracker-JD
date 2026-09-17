@@ -283,13 +283,13 @@ body {
   }
   .spidey-dangle .web {
     /* Medida controlada, ya no aplasta los botones */
-    height: 140px !important; 
+    height: 175px !important; 
     width: 2px;
   }
 
   /* NUEVO: Empujamos el menú justo por debajo de las patas de Spidey */
   .menu-fade-in {
-    padding-top: 195px !important; 
+    padding-top: 230px !important; 
   }
 
   /* 2. Textos del menú (Proporciones correctas) */

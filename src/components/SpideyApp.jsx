@@ -109,13 +109,15 @@ export default function SpideyApp() {
               </div>
               <p className="hint">ELIGE TU CONFIGURACIÓN Y EMPIEZA A RASTREAR</p>
               <div className="sound-row">
-                <button 
+                <button
+                  id="btn-react-sound-on"
                   className={`sound-btn ${soundEnabled === true ? 'active' : ''}`} 
                   onClick={() => handleSoundChoice(true)}
                 >
                   SONIDO ACTIVADO
                 </button>
-                <button 
+                <button
+                  id="btn-react-sound-off"
                   className={`sound-btn ${soundEnabled === false ? 'active' : ''}`} 
                   onClick={() => handleSoundChoice(false)}
                 >

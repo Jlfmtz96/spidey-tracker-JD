@@ -487,7 +487,7 @@
   /* --- TEXTO BASE (Por defecto estático y centrado) --- */
   .marquee-text {
     color: #9eb4c6;
-    font-size: 17px;
+    font-size: 20px;
     letter-spacing: 1px;
     font-family: 'VT323', monospace;
     -webkit-font-smoothing: none;
@@ -543,11 +543,7 @@
 
   /* --- AJUSTES RESPONSIVOS DEL MARCO --- */
   @media (max-width: 768px) {
-    .sound-status span {
-      padding: 3px 12px !important; /* Ajuste de padding para móviles */
-      font-size: 16px !important; /* Texto proporcionado, ya no se ve gigante */
-      max-width: 280px; /* Píldora más estrecha en móvil */
-    }
+
     .hanging-buttons {
       padding: 0 10px;
     }
@@ -610,10 +606,10 @@
     gap: 24px;
     
     /* ANTES ESTABA EN 24px. Lo reducimos a 12px para pegarlo a los botones */
-    margin-top: 12px; 
+    margin-top: 0px; 
     
     background: rgba(6, 21, 43, 0.85); 
-    padding: 14px 32px;
+    padding: 10px 12px;
     width: 90%;
     max-width: 650px;
   }
@@ -782,12 +778,7 @@
     .sound-status {
        bottom: -68px; /* Ajuste milimétrico de posición */
     }
-    .sound-status span {
-      padding: 6px 12px;
-      font-size: 10px; /* Texto proporcionado, ya no se ve gigante */
-      letter-spacing: 1px;
-      width: 90%; /* Para que respire un poco en los bordes */
-    }
+
 
     /* 4. Botones Naranjas (Legibilidad absoluta) */
     .hanging-buttons {

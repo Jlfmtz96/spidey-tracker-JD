@@ -58,7 +58,7 @@ export default function SpideyApp() {
       if (step === 0) statusSpan.textContent = "CARGANDO";
       if (step === 1) statusSpan.textContent = "SELECCIONA UNA OPCIÓN DE SONIDO";
       if (step === 2) statusSpan.textContent = "CARGANDO";
-      if (step === 3) statusSpan.textContent = "¡NO FALTES!";
+      if (step === 3) statusSpan.textContent = "OBJETIVO LOCALIZADO: TOCA EL MARCADOR";
     }
   }, [step]);
 

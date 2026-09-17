@@ -47,20 +47,60 @@ body {
   margin-bottom: 18px;
 }
 
-/* --- TELARAÑA CON ANCHO DE 4px Y LUMINOSIDAD --- */
+/* --- TELARAÑA (MÁS CORTA PARA NO ESTORBAR) --- */
 .spidey-dangle .web {
   display: block;
-  width: 3px; /* Ancho solicitado */
-  height: 260px; /* Ajusta la longitud según qué tan abajo quieras que empiece Spidey */
-  background: #ffffff; /* Núcleo blanco brillante */
-  
-  /* Efecto de luminosidad / brillo neón usando cian y blanco */
-  box-shadow: 
-    0 0 6px rgba(255, 255, 255, 0.9), 
-    0 0 12px var(--spidey-cyan, #5ec8e8),
-    0 0 20px var(--spidey-cyan, #5ec8e8);
-    
-  margin-bottom: -10px; /* Conecta perfecto con la cabeza de Spidey */
+  width: 4px;
+  /* Reducimos la altura significativamente (ej. de 140px a 80px) */
+  height: 80px; 
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
+  margin-bottom: -8px; 
+}
+
+/* --- ANIMACIÓN DE CAÍDA (ASOMO Y CAÍDA) --- */
+.spidey-drop-in {
+  /* Empezamos en opacidad 0 para que no se vea al instante */
+  opacity: 0;
+  /* Animación de 3.5s en total, con 0.5s de retraso inicial */
+  animation: dropDown 3.5s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+}
+
+@keyframes dropDown {
+  0% { 
+    transform: translateY(-200px); /* Escondido por encima del marco superior */
+    opacity: 0; 
+  }
+  15% {
+    transform: translateY(-80px); /* Baja y se asoma la mitad del cuerpo */
+    opacity: 1;
+  }
+  35% {
+    transform: translateY(-80px); /* Se mantiene asomado y esperando */
+    opacity: 1;
+  }
+  70%, 100% { 
+    transform: translateY(0); /* Termina de caer a su límite (la telaraña toca el borde exacto) */
+    opacity: 1; 
+  }
+}
+
+/* --- ANIMACIÓN DE ENTRADA PARA EL MENÚ (FADE IN) --- */
+.menu-fade-in {
+  opacity: 0;
+  /* Entra suavemente medio segundo después de aparecer en el DOM */
+  animation: fadeIn 1.5s ease-out 0.2s forwards;
+}
+
+@keyframes fadeIn {
+  0% { 
+    opacity: 0; 
+    transform: translateY(15px); /* Entra ligeramente desde abajo */
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
 .spidey-dangle .spidey {
@@ -82,6 +122,8 @@ body {
 .spidey-sprite {
   width: 68px;  
   height: 90px;
+  transform: scale(0.9);
+  transform-origin: top center;
   
   background-image: url("/SpiderMan_web.png");
   
@@ -107,13 +149,14 @@ body {
   }
 }
 
-
-
 .welcome {
-  margin: 0 0 18px;
-  font-size: 15px;
-  line-height: 1.55;
-  max-width: 520px;
+  margin: 0 0 20px;
+  font-size: 19px; /* Aumentamos el tamaño para igualar al original */
+  line-height: 1; /* Interlineado más compacto */
+  max-width: 540px;
+  color: #ffffff; /* Blanco puro para que resalte igual que en la peli */
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8); /* Sombrita para separarlo de la telaraña de fondo */
+  letter-spacing: 0.8px;
 }
 
 /* --- ANIMACIÓN VÚMETRO RETRO (ECUALIZADOR ALEATORIO) --- */
@@ -165,7 +208,10 @@ body {
 
 .hint {
   margin: 0 0 16px;
-  font-size: 14px;
+  font-size: 16px; /* Más legible */
+  color: #e2f1fc; /* Un blanco ligeramente azulado */
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.5px;
 }
 
 .sound-row {
@@ -175,59 +221,452 @@ body {
   justify-content: center;
 }
 
+/* --- BOTONES DE SONIDO (TAMAÑO REDUCIDO) --- */
 .sound-btn {
   font-family: inherit;
-  font-size: 14px;
+  font-size: 14px; /* Subimos el tamaño de la fuente */
   letter-spacing: 1px;
-  color: #7f96aa;
-  background: #24313b;
+  color: #9eb4c6;
+  background: transparent; /* El original es más transparente sin seleccionar */
   border: 2px solid #4d6a80;
-  padding: 8px 22px;
-  min-width: 180px;
+  border-radius: 6px; /* Bordes ligeramente redondeados como el original */
+  padding: 2px 18px; 
+  min-width: 160px; 
+  cursor: pointer;
+  transition: all 0.2s ease; 
+}
+
+/* Mantenemos tu clase hover/active intacta */
+.sound-btn.active,
+.sound-btn:hover {
+  color: #ffffff;
+  background: #3a5c75; 
+  border-color: #ffffff;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* --- BOTÓN DE RUTA (PANEL LATERAL) --- */
+.route-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  padding: 10px 16px;
+  background-color: var(--spidey-cyan); /* Color cian para que resalte en el fondo oscuro */
+  color: #061017; /* Texto oscuro para contrastar */
+  border: 2px solid #ffffff;
+  box-shadow: 4px 4px 0px #000000; /* Sombra sólida retro */
+  transition: transform 0.1s, box-shadow 0.1s;
+  font-weight: bold;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.route-btn:active {
+  transform: translate(2px, 2px); /* Se sume al hacer clic */
+  box-shadow: 2px 2px 0px #000000;
+}
+
+/* --- AJUSTES RESPONSIVOS OBLIGATORIOS PARA CELULARES --- */
+@media (max-width: 768px) {
+  .boot-screen {
+    /* Reducimos los márgenes laterales al mínimo (4px) y damos espacio arriba para Spidey */
+    padding: 35px 4px 10px !important; 
+  }
+
+  /* 1. Spidey y su telaraña */
+  .spidey-sprite {
+    transform: scale(0.8); /* Tamaño más sutil */
+  }
+  .spidey-dangle .web {
+    height: 115px !important; /* ¡Alargamos la telaraña para que baje del logo! */
+    width: 2px;
+  }
+
+  /* 2. Textos del menú (Proporciones correctas) */
+  .welcome {
+    font-size: 15px; /* Más grande y protagonista */
+    line-height: 1;
+    margin-bottom: 20px;
+    padding: 0 2px !important; /* Dejamos que ocupe casi el 100% del ancho */
+    width: 98% !important;
+  }
+  .hint {
+    font-size: 13px; /* Más pequeño para contrastar */
+    margin-bottom: 12px;
+  }
+  
+  /* 3. Botones centrales de sonido */
+  .sound-row {
+    flex-wrap: nowrap; 
+    gap: 12px; /* Separación limpia entre ambos */
+    width: 100%;
+    padding: 0 4px;
+  }
+  .sound-btn {
+    min-width: 0;
+    flex: 1; /* Se reparten el espacio al 50% */
+    padding: 2px;
+    font-size: 13px; /* Legible pero sin desbordar */
+    letter-spacing: 0px; 
+  }
+
+  /* --- 4. REDUCCIÓN DEL RADAR EN CELULAR --- */
+.radar-wrapper {
+    width: 75px !important; 
+    height: 75px !important;
+    bottom: 45px !important; /* Más arriba para no estorbar a Google y los Términos */
+    right: 25px !important;  /* Bien pegadito al borde derecho */
+  }
+
+  .radar-btn {
+    width: 22px !important; 
+    height: 22px !important;
+  }
+
+  .radar-btn-globe {
+    right: -10px !important;
+  }
+
+  .radar-btn-target {
+    right: -10px !important;
+  }
+
+  .radar-dot.red {
+    width: 3px !important; 
+    height: 3px !important;
+  }
+
+  .radar-dot.white, 
+  .radar-center-node {
+    width: 4px !important; 
+    height: 4px !important;
+  }
+}
+
+/* --- ANIMACIÓN PARA EL PIN DEL EVENTO --- */
+.blinking-star {
+  width: 48px; /* Ajusta según el tamaño de tu PNG */
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(62, 195, 224, 0.8)); /* Resplandor cian */
+  animation: radarPulse 1.5s infinite alternate;
   cursor: pointer;
 }
 
-.sound-btn.active,
-.sound-btn:hover {
-  color: #f4f8fb;
-  background: #31485a;
-  border-color: #7eabc8;
+@keyframes radarPulse {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1.1); }
 }
 
-/* --- AJUSTES RESPONSIVOS INTERNOS --- */
-@media (max-width: 768px) {
-  .sound-row {
-    flex-wrap: nowrap; /* Fuerza a que se mantengan en la misma línea */
-    gap: 8px;
-  }
-  .sound-btn {
-    min-width: 0; /* Quitamos la restricción de tamaño */
-    flex: 1; /* Hacemos que se repartan el espacio a la mitad exacta */
-    padding: 6px 8px;
-    font-size: 10px;
-    letter-spacing: 0.5px;
-  }
-  .welcome {
-    font-size: 11px; /* Achicamos un poco el texto de bienvenida */
-  }
+.spidey-pin {
+  width: 32px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-/* --- ANIMACIÓN DE CAÍDA (DROP-IN) --- */
-.spidey-drop-in {
-  /* Duración exacta de 3 segundos con una desaceleración muy suave al final */
-    animation: dropDown 3s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+.spidey-pin:hover {
+  transform: scale(1.2);
 }
 
-@keyframes dropDown {
-  0% { 
-    transform: translateY(-200px); /* Empieza escondido arriba de la pantalla */
-    opacity: 0; 
-  }
-  60% { 
-    transform: translateY(15px); /* Baja un poco de más por inercia */
-    opacity: 1;
-  }
-  100% { 
-    transform: translateY(0); /* Se estabiliza en su posición original */
-  }
+/* --- HACK PARA EL INFOWINDOW DE GOOGLE MAPS --- */
+.gm-style-iw.gm-style-iw-c {
+  background-color: #061727 !important; /* Fondo azul muy oscuro */
+  border: 2px solid var(--spidey-cyan) !important; /* Borde cian */
+  border-radius: 0 !important; /* Esquinas cuadradas retro */
+  box-shadow: 0 0 12px rgba(94, 200, 232, 0.4) !important;
+  padding: 0 !important;
+}
+
+/* El piquito inferior que apunta al marcador */
+.gm-style-iw-tc::after {
+  background: #061727 !important;
+  border-right: 2px solid var(--spidey-cyan) !important;
+  border-bottom: 2px solid var(--spidey-cyan) !important;
+}
+
+/* Ocultar el botón de cerrar por defecto de Google (haremos uno si quieres, o solo clic fuera) */
+.gm-style-iw-d {
+  overflow: hidden !important;
+}
+.gm-ui-hover-effect {
+  display: none !important; 
+}
+
+/* --- PANEL LATERAL DE INVITACIÓN (ESTILO EVENTOS) --- */
+.invite-sidebar {
+  position: absolute;
+  top: 0;
+  right: -400px; /* Escondido por defecto para animarlo */
+  width: 100%;
+  max-width: 380px;
+  height: 100%;
+  background-color: #061017; /* Fondo súper oscuro */
+  border-left: 2px solid var(--spidey-cyan);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: -8px 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.invite-sidebar.open {
+  right: 0; /* Desliza hacia adentro */
+}
+
+/* Cabecera del panel (Igual al video: Icono + "EVENTOS" + Botón Cerrar) */
+.invite-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #0a1b28;
+  border-bottom: 2px solid #143a57;
+}
+
+.invite-sidebar-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--spidey-text);
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.close-btn:hover {
+  color: #fff;
+}
+
+/* Contenido de la invitación */
+.invite-content {
+  padding: 24px;
+  overflow-y: auto;
+  color: var(--spidey-text);
+  font-size: 18px;
+  text-align: left;
+}
+
+.invite-content .highlight-title {
+  color: #fff;
+  font-size: 24px;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+.invite-content .date-box {
+  background: #143a57;
+  padding: 10px;
+  border-left: 4px solid var(--spidey-cyan);
+  margin: 16px 0;
+  color: #fff;
+}
+
+/* --- FOTO DEL CUMPLEAÑERO EN EL PANEL --- */
+.birthday-photo-container {
+  width: 100%;
+  margin: 16px 0;
+  border: 2px solid var(--spidey-cyan);
+  padding: 4px;
+  background: #0a1b28;
+  box-shadow: 0 0 10px rgba(94, 200, 232, 0.2);
+  position: relative;
+}
+
+/* Esquinas estilo radar para la foto */
+.birthday-photo-container::before,
+.birthday-photo-container::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #fff;
+  z-index: 2;
+}
+
+.birthday-photo-container::before {
+  top: -2px; left: -2px;
+  border-right: none; border-bottom: none;
+}
+
+.birthday-photo-container::after {
+  bottom: -2px; right: -2px;
+  border-left: none; border-top: none;
+}
+
+.birthday-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* Un filtro leve para que la foto encaje con la vibra del monitor retro */
+  filter: contrast(1.1) brightness(0.9); 
+  image-rendering: auto;
+
+}
+
+/* --- OVERLAYS DE UI (CUADRÍCULA Y REGLAS) --- */
+.overlay-ui {
+  position: absolute;
+  pointer-events: none; 
+  z-index: 50; 
+}
+
+.grid-lines {
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url('/images/trackerMap/grid_lines.png'); 
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15; 
+}
+
+/* --- REGLAS HORIZONTALES (Ajustadas y pegadas arriba) --- */
+.measure-h-container {
+  position: absolute;
+  top: 10px; /* Pegado al margen superior */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly; 
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.8;
+}
+
+.measure-h {
+  width: 120px; /* Tamaño muy reducido */
+  height: auto;
+  object-fit: contain;
+}
+
+/* --- REGLAS VERTICALES --- */
+.measure-v {
+  position: absolute;
+  left: 10px;
+  height: 160px; /* ¡Aumentamos el tamaño a un punto medio! */
+  width: auto;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 50;
+}
+/* Forzamos sus posiciones exactas */
+.measure-v.top { top: 15%; }
+.measure-v.bottom { bottom: 0%; }
+
+/* --- WIDGET DEL RADAR (Con botones montados) --- */
+.radar-wrapper {
+  position: absolute;
+  bottom: 30px; 
+  right: 60px; 
+  width: 110px; /* Un poco más grande para apreciar el detalle */
+  height: 110px;
+  z-index: 1000; /* Aseguramos que nada lo tape */
+  pointer-events: none; /* Deja pasar los clics en zonas transparentes */
+}
+
+.radar-base {
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/trackerMap/radar.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  /* ¡Quitamos el border-radius y el overflow para no recortar la imagen! */
+  image-rendering: auto;
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 50%; /* Este se queda para que la luz del escáner sea redonda */
+  background: conic-gradient(from 0deg, transparent 70%, rgba(94, 200, 232, 0.5) 100%);
+  transform-origin: center center; 
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- BOTONES DEL RADAR SUPERPUESTOS --- */
+.radar-btn {
+  position: absolute;
+  width: 26px; 
+  height: 26px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  transition: transform 0.2s ease;
+  pointer-events: auto; 
+  z-index: 10;
+  outline: none; /* ¡Esto quita el cuadro blanco al hacer clic! */
+  -webkit-tap-highlight-color: transparent; /* Quita el destello en celulares */
+}
+
+.radar-btn:focus {
+  outline: none; /* Refuerzo para navegadores necios */
+}
+
+.radar-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
+.radar-btn:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 8px rgba(94, 200, 232, 0.9));
+}
+
+/* Ajustamos la posición para que encajen con su nuevo tamaño */
+.radar-btn-globe {
+  top: 15%;
+  right: -13px; 
+}
+
+.radar-btn-target {
+  bottom: 15%;
+  right: -13px; 
+}
+
+/* --- PUNTOS DE RASTREO EN EL RADAR --- */
+.radar-dot {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 5; /* Debajo del barrido verde para que la luz los ilumine al pasar */
+}
+
+.radar-dot.red {
+  width: 4px;
+  height: 4px;
+  background-color: #ff3b3b;
+  box-shadow: 0 0 4px #ff3b3b;
+}
+
+.radar-dot.white {
+  width: 6px; /* Un poco más grande para destacar el evento */
+  height: 6px;
+  background-color: #ffffff;
+  box-shadow: 0 0 6px #ffffff;
+  /* Reutilizamos tu animación de radarPulse para que parpadee */
+  animation: radarPulse 1.5s infinite alternate; 
 }

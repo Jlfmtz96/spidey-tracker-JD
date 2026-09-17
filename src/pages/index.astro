@@ -6,94 +6,38 @@ import SpideyApp from "../components/SpideyApp.jsx";
 
 <Layout title="Spidey Tracker | Invitación">
   <div class="page">
-    <aside class="rail left-menu" aria-label="Accesos">
-      <button class="spider-btn" type="button" aria-label="Avistamiento 1"></button>
-      <button class="spider-btn" type="button" aria-label="Avistamiento 2"></button>
-      <button class="spider-btn" type="button" aria-label="Avistamiento 3"></button>
-    </aside>
-
+    {/* ELIMINAMOS los dos <aside> que contenían los círculos laterales */}
+    
     <main class="tracker-container">
       <SpideyFrame>
         <SpideyApp client:only="react" />
       </SpideyFrame>
     </main>
-
-    <aside class="rail right-menu" aria-label="Eventos">
-      <button class="spider-btn" type="button" aria-label="Eventos"></button>
-    </aside>
   </div>
 </Layout>
 
 <style>
   .page {
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 72px minmax(0, 1fr) 72px;
-    align-items: stretch;
-    background: #06152b; /* Modificado por un azul oscuro como el original */
+    background: #06152b; 
+    /* Quitamos el display: flex de aquí para evitar que apachurre el contenido */
   }
 
-  .rail {
+.tracker-container {
+    /* Cambiamos a min-height para que el marco pueda estirarse más si lo necesita */
+    min-height: 100vh; 
+    padding: 35px 20px 16px; /* Aumentamos el padding superior para que el logo respire */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    padding-top: 28px;
-    z-index: 3;
-  }
-
-  .right-menu {
-    padding-top: 18px;
-  }
-
-  .spider-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 3px solid #f08a1a;
-    background-color: #1a1a1a;
-    background-image: url("/SM_ASCII_DOTS_WHITE.png");
-    background-size: 70%;
-    background-repeat: no-repeat;
-    background-position: center;
-    box-shadow: 0 0 0 2px #111;
-    cursor: pointer;
-  }
-
-  .tracker-container {
-    height: 100vh;
-    max-height: 100vh;
-    /* Añadimos padding a los lados (40px) para que no pegue con los botones laterales */
-    padding: 18px 40px 12px; 
-    display: flex;
-    /* ESTO ES LO CRÍTICO: Hace que el flexbox fluya hacia abajo y permite que el hijo tome el 100% del ancho */
     flex-direction: column; 
     width: 100%;
+    max-width: 1200px; 
+    margin: 0 auto; 
   }
 
   /* --- AJUSTES RESPONSIVOS --- */
   @media (max-width: 768px) {
-    .page {
-      display: flex; /* Quitamos el grid rígido en móviles */
-      position: relative;
-    }
     .tracker-container {
-      width: 100%;
-      padding: 10px 0; /* Quitamos el padding lateral para que toque los bordes */
-    }
-    .rail {
-      position: absolute;
-      z-index: 50; /* Hace que los botones floten sobre el marco azul */
-    }
-    .left-menu {
-      left: 4px;
-    }
-    .right-menu {
-      right: 4px;
-    }
-    .spider-btn {
-      width: 36px;
-      height: 36px; /* Hacemos los botones un poco más sutiles */
+      padding: 10px 0; /* En celular, que el marco toque los bordes */
     }
   }
 </style>

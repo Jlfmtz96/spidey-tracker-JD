@@ -3,6 +3,11 @@
 
 <div class="tracker-wrapper">
   <div class="frame">
+    <!-- SPIDEY ANIMADO: ESQUINA INFERIOR IZQUIERDA -->
+    <div class="corner-spidey-wrapper">
+      <div class="corner-spidey-bg"></div>
+      <div class="corner-spidey-sprite"></div>
+    </div>
     <!-- Bordes superiores -->
     <div class="slice tl"></div>
     <div class="slice t"></div>
@@ -25,9 +30,21 @@
       </div>
 
       <!-- BOTÓN FLOTANTE INFERIOR -->
-      <div class="sound-status">
-        <span>SELECCIONA UNA OPCIÓN DE SONIDO</span>
-      </div>
+    <div class="sound-status">
+      <span>SELECCIONA UNA OPCIÓN DE SONIDO</span>
+
+      <!-- NUEVO BOTÓN DE SONIDO (CON SPRITES PROPIOS) -->
+      <button id="global-sound-toggle" class="sound-toggle-btn" aria-label="Alternar sonido">
+        <!-- Capa 1: Fondo ensamblado con tus 3 PNGs -->
+        <div class="btn-bg">
+          <div class="btn-slice-l"></div>
+          <div class="btn-slice-c"></div>
+          <div class="btn-slice-r"></div>
+        </div>
+        <!-- Capa 2: Icono de la bocina por encima -->
+        <img src="/images/sound_off.png" alt="Sonido" id="sound-icon-img" />
+      </button>
+    </div>
 
     </div>
     
@@ -118,7 +135,7 @@
   }
 
   if (form) {
-form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const submitBtn = form.querySelector('.submit-btn');
@@ -158,6 +175,29 @@ form.addEventListener('submit', async (e) => {
         console.error('Error!', error.message);
         submitBtn.textContent = "ERROR. REINTENTA.";
         submitBtn.style.backgroundColor = "#ff3b3b";
+      }
+    });
+  }
+
+  // CONTROL GLOBAL DE SONIDO
+  const soundBtnToggle = document.getElementById('global-sound-toggle');
+  const soundIconImg = document.getElementById('sound-icon-img');
+  let isMuted = false;
+
+  if (soundBtnToggle && soundIconImg) {
+    soundBtnToggle.addEventListener('click', () => {
+      isMuted = !isMuted;
+      
+      // Encuentra todos los audios (React, Astro, etc.) y los silencia a la fuerza
+      document.querySelectorAll('audio').forEach(audio => {
+        audio.muted = isMuted;
+      });
+
+      // Efecto visual: Atenúa la bocina si está silenciado
+      if (isMuted) {
+        soundIconImg.style.opacity = '0.3';
+      } else {
+        soundIconImg.style.opacity = '1';
       }
     });
   }
@@ -316,31 +356,121 @@ form.addEventListener('submit', async (e) => {
 
   .sound-status {
     position: absolute;
-    /* Empujamos el contenedor 76px hacia abajo */
     bottom: -76px; 
-    /* Mantenemos la altura del marco para que el flexbox lo centre a la perfección */
     height: 58px; 
     left: 0;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center; 
+    gap: 12px; /* Espacio entre el texto y el botón */
     z-index: 20;
   }
 
-.sound-status span {
-    background: #2b3944; /* Gris oscuro del interior del marco */
-    color: #9eb4c6;
-    border: 2px solid var(--spidey-cyan); /* Borde idéntico al marco */
-    border-radius: 999px;
-    padding: 8px 30px;
-    font-size: 15px;
-    letter-spacing: 1px;
-    width: 100%;
-    max-width: 360px; /* Ancho fijo para que no se estire */
-    text-align: center;
-    box-shadow: inset 0px 0px 12px rgba(0,0,0,0.8); /* Efecto hundido */
+  .sound-toggle-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 0;
+    
+    /* CAMBIA ESTA MEDIDA: Antes estaba en 32px. 
+       Prueba con 38px o 40px para que respire el icono */
+    height: 40px; 
+    
+    width: 54px;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
     pointer-events: auto;
+    transition: transform 0.1s;
+    image-rendering: pixelated;
+  }
+  .sound-toggle-btn:active {
+    transform: scale(0.92);
+  }
+
+  /* --- ENSAMBLAJE DEL FONDO DEL BOTÓN --- */
+  .btn-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 1;
+  }
+
+  .btn-slice-l {
+    /* Ajusta este valor (ej. 8px o 12px) si la esquina izquierda se ve estirada */
+    width: 10px; 
+    background-image: url('/images/btn-white-1.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .btn-slice-c {
+    flex: 1; /* Se estira automáticamente para rellenar el centro */
+    background-image: url('/images/btn-white-2.png');
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+  }
+
+  .btn-slice-r {
+    /* Ajusta este valor si la esquina derecha se ve estirada */
+    width: 10px; 
+    background-image: url('/images/btn-white-3.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  /* --- ICONO CENTRAL --- */
+  .sound-toggle-btn img {
+    position: relative;
+    z-index: 2; /* Se coloca por encima del fondo ensamblado */
+    height: 12px; /* Hazlo más grande o chico según encaje en tus marcos */
+    width: auto;
+    transition: opacity 0.2s;
+  }
+
+  .sound-status span {
+    /* 1. Fondo oscuro liso estilo 8-bits */
+    background: #1c2329; 
+    
+    /* 2. Borde negro con un bisel interior claro (el clásico efecto pixel art) */
+    border: 2px solid #000000;
+    box-shadow: inset 0 0 0 2px #3a4b59;
+    border-radius: 8px; /* Menos curvo que el anterior para un look más retro */
+    padding: 6px 24px;
+    
+    /* 3. Text settings */
+    color: #9eb4c6;
+    font-size: 18px;
+    letter-spacing: 1px;
+    
+    /* ¡LA CURA PARA EL TEXTO PIXELEADO! */
+    font-family: 'VT323', monospace;
+    -webkit-font-smoothing: none; /* Fuerza bordes dentados y perfectos */
+    font-smooth: never; 
+    
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    pointer-events: auto;
+
+    /* 4. Animación ajustada */
+    animation: blinkTextRetro 1.2s steps(2, start) infinite;
+  }
+
+  /* El parpadeo ahora alterna entre encendido y un gris oscuro (apagado) */
+  @keyframes blinkTextRetro {
+    0%, 100% { 
+      color: #9eb4c6; 
+      text-shadow: none;
+    }
+    50% { 
+      color: #2b3944; /* No es transparente, es el color de "pantalla apagada" */
+    }
   }
 
   .btn-retro {
@@ -628,5 +758,62 @@ form.addEventListener('submit', async (e) => {
     .film-title {
       font-size: 20px;
     } */
+  }
+
+/* --- SPIDEY ESQUINA INFERIOR IZQUIERDA --- */
+  .corner-spidey-wrapper {
+    position: absolute;
+    bottom: -5px; 
+    /* ¡Lo metimos hacia adentro! Antes era -40px */
+    left: -10px;   
+    /* Hicimos el contenedor más pequeño */
+    width: 75px;
+    height: 75px;
+    z-index: 40;
+    pointer-events: none;
+  }
+
+  .corner-spidey-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/SpiderMan_Container.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+  }
+
+  .corner-spidey-sprite {
+    position: absolute;
+    bottom: 12px; 
+    left: 50%;
+    
+    /* Agregamos scale(1.5) para hacerlo 50% más grande sin deformarlo. 
+       Si lo quieres aún más grande, prueba con scale(1.8) o scale(2) */
+    transform: translateX(-50%) scale(1.5);
+    
+    /* Mantenemos estas medidas intactas porque son las que evitan que se aplaste */
+    width: 45px; 
+    height: 70px; 
+    
+    background-image: url('/images/SpiderMan_HeadTurn.png'); 
+    background-size: 7600% 100%;
+    background-position: 0 0;
+    animation: playCornerSpidey 4s steps(75) infinite;
+    image-rendering: pixelated;
+  }
+
+  @keyframes playCornerSpidey {
+    100% { background-position: 100% 0; }
+  }
+
+  @media (max-width: 768px) {
+    .corner-spidey-wrapper {
+      transform: scale(0.7);
+      left: -8px; /* Ajuste para que tampoco se salga en celular */
+      bottom: -10px;
+    }
   }
 </style>

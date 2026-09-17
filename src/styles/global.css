@@ -670,3 +670,25 @@ body {
   /* Reutilizamos tu animación de radarPulse para que parpadee */
   animation: radarPulse 1.5s infinite alternate; 
 }
+
+/* --- AJUSTES PANTALLAS GRANDES (Desktop) --- */
+@media (min-width: 1024px) {
+  /* 1. Alargamos la telaraña (45vh = 45% del alto de la pantalla) */
+  .spidey-dangle .web {
+    height: 45vh !important; 
+  }
+
+  /* 2. Empujamos el menú más abajo para que Spidey no tape las letras */
+  /* Usamos !important para sobreescribir el estilo en línea de SpideyApp.jsx */
+  .menu-fade-in {
+    padding-top: 52vh !important; 
+  }
+
+  /* 3. Ajustamos la animación de caída para evitar que se vea cortado arriba */
+  @keyframes dropDown {
+    0% { transform: translateY(-60vh); opacity: 0; }
+    15% { transform: translateY(-20vh); opacity: 1; }
+    35% { transform: translateY(-20vh); opacity: 1; }
+    70%, 100% { transform: translateY(0); opacity: 1; }
+  }
+}

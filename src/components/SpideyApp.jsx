@@ -55,7 +55,7 @@ export default function SpideyApp() {
   useEffect(() => {
     const statusSpan = document.querySelector('.sound-status span');
     if (statusSpan) {
-      if (step === 0) statusSpan.textContent = "CARGANDO...";
+      if (step === 0) statusSpan.textContent = "CARGANDO";
       if (step === 1) statusSpan.textContent = "SELECCIONA UNA OPCIÓN DE SONIDO";
       if (step === 2) statusSpan.textContent = "CARGANDO";
       if (step === 3) statusSpan.textContent = "¡NO FALTES!";

@@ -31,7 +31,10 @@
 
       <!-- BOTÓN FLOTANTE INFERIOR -->
     <div class="sound-status">
-      <span>SELECCIONA UNA OPCIÓN DE SONIDO</span>
+      <!-- NUEVA CAJA PARA EL TEXTO CORREDIZO -->
+      <div class="status-screen">
+        <span class="marquee-text">SELECCIONA UNA OPCIÓN DE SONIDO</span>
+      </div>
 
       <!-- NUEVO BOTÓN DE SONIDO (CON SPRITES PROPIOS) -->
       <button id="global-sound-toggle" class="sound-toggle-btn" aria-label="Alternar sonido">
@@ -433,44 +436,54 @@
     transition: opacity 0.2s;
   }
 
-  .sound-status span {
-    /* 1. Fondo oscuro liso estilo 8-bits */
+/* --- CAJA DEL TEXTO RETRO --- */
+  .status-screen {
     background: #1c2329; 
-    
-    /* 2. Borde negro con un bisel interior claro (el clásico efecto pixel art) */
     border: 2px solid #000000;
     box-shadow: inset 0 0 0 2px #3a4b59;
-    border-radius: 8px; /* Menos curvo que el anterior para un look más retro */
-    padding: 6px 24px;
-    
-    /* 3. Text settings */
-    color: #9eb4c6;
-    font-size: 18px;
-    letter-spacing: 1px;
-    
-    /* ¡LA CURA PARA EL TEXTO PIXELEADO! */
-    font-family: 'VT323', monospace;
-    -webkit-font-smoothing: none; /* Fuerza bordes dentados y perfectos */
-    font-smooth: never; 
-    
-    width: 100%;
+    border-radius: 8px;
+    height: 38px;
+    flex: 1; 
     max-width: 360px;
-    text-align: center;
-    pointer-events: auto;
+    
+    overflow: hidden; 
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* ¡ESTO CENTRA LOS TEXTOS CORTOS! */
+  }
 
-    /* 4. Animación ajustada */
+  /* --- TEXTO BASE (Por defecto estático y centrado) --- */
+  .marquee-text {
+    color: #9eb4c6;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-family: 'VT323', monospace;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    white-space: nowrap; 
+    
+    /* Por defecto, SOLO tiene la animación de parpadeo */
     animation: blinkTextRetro 1.2s steps(2, start) infinite;
   }
 
-  /* El parpadeo ahora alterna entre encendido y un gris oscuro (apagado) */
+  /* --- MODO CORREDIZO (Se activa con JS solo si es largo) --- */
+  .marquee-text.is-scrolling {
+    position: absolute;
+    /* Aplica ambas animaciones: movimiento + parpadeo */
+    animation: scrollMarquee 8s linear infinite, blinkTextRetro 1.2s steps(2, start) infinite;
+  }
+
+  /* Animación mejorada para que arranque en el borde derecho exacto */
+  @keyframes scrollMarquee {
+    0% { left: 100%; transform: translateX(0); }
+    100% { left: 0; transform: translateX(-100%); }
+  }
+
+  /* Animación de parpadeo (se queda igual) */
   @keyframes blinkTextRetro {
-    0%, 100% { 
-      color: #9eb4c6; 
-      text-shadow: none;
-    }
-    50% { 
-      color: #2b3944; /* No es transparente, es el color de "pantalla apagada" */
-    }
+    0%, 100% { color: #9eb4c6; }
+    50% { color: #2b3944; }
   }
 
   .btn-retro {

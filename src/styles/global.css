@@ -277,13 +277,19 @@ body {
     padding: 35px 4px 10px !important; 
   }
 
-  /* 1. Spidey y su telaraña */
+/* 1. Spidey y su telaraña */
   .spidey-sprite {
-    transform: scale(0.8); /* Tamaño más sutil */
+    transform: scale(0.8); 
   }
   .spidey-dangle .web {
-    height: 115px !important; /* ¡Alargamos la telaraña para que baje del logo! */
+    /* ¡AUMENTAMOS ESTO PARA QUE BAJE MÁS! */
+    height: 25vh !important; 
     width: 2px;
+  }
+
+  /* NUEVO: Empujamos el menú hacia abajo solo en celular */
+  .menu-fade-in {
+    padding-top: 38vh !important; 
   }
 
   /* 2. Textos del menú (Proporciones correctas) */

@@ -485,6 +485,7 @@ form.addEventListener('submit', async (e) => {
   }
 
   /* --- ESTILOS DEL MODAL (DIALOG) --- */
+/* --- ESTILOS DEL MODAL (DIALOG) --- */
   .retro-modal {
     background: #061017;
     border: 3px solid var(--spidey-cyan);
@@ -495,6 +496,13 @@ form.addEventListener('submit', async (e) => {
     width: 90%;
     max-width: 420px;
     font-family: inherit;
+    
+    /* ¡NUEVAS LÍNEAS PARA FORZAR EL CENTRADO! */
+    margin: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .retro-modal::backdrop {
